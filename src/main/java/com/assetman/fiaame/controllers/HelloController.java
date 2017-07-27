@@ -30,17 +30,27 @@ public class HelloController {
         return "index";
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
-    String login(Model model, @Valid @ModelAttribute(value = "user") User user, HttpSession session) {
+    @RequestMapping(value = "tologin", method = RequestMethod.POST)
+    String tologin(Model model, @Valid @ModelAttribute(value = "user") User user, HttpSession session) {
         System.out.println("登陆===================" + user.getUsername());
         User user1 = ebeanServer.find(User.class).where().eq("username", user.getUsername()).eq("password", user.getPassword()).findUnique();
         if (user1 != null) {
             System.out.println("登录成功=======================" + user.getUsername());
             session.setAttribute(MvcConfiguration.SESSION_KEY, user);
-            model.addAttribute("username", user1.getUsername());
-            return "login";
+            return "redirect:/login";
         }
         System.out.println("登录失败=======================" + user.getUsername());
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    String login() {
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute(MvcConfiguration.SESSION_KEY);
         return "redirect:/";
     }
 
