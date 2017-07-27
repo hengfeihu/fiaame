@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
  * Created by hengfeihu on 2017/7/24.
  */
 @Configuration
+@EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
     /**
      * 登录session key
@@ -38,14 +39,14 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new SecurityInterceptor();
     }
 
-    public class SecurityInterceptor extends HandlerInterceptorAdapter {
+    private class SecurityInterceptor extends HandlerInterceptorAdapter {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-            System.out.println("login拦截=================================================");
             HttpSession session = request.getSession();
-            if (session.getAttribute(SESSION_KEY) != null)
+            if (session.getAttribute(SESSION_KEY) != null) {
+                System.out.println("login拦截=================================================" + request.getRequestURI());
                 return true;
-
+            }
             // 跳转登录
             String url = "/";
             response.sendRedirect(url);

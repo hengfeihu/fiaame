@@ -9,10 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -27,10 +24,10 @@ public class HelloController {
     @Autowired
     private EbeanServer ebeanServer;
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     String index(Model model) {
         model.addAttribute("key", "hello world!----------------index");
-        return "/index";
+        return "index";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -38,19 +35,20 @@ public class HelloController {
         System.out.println("登陆===================" + user.getUsername());
         User user1 = ebeanServer.find(User.class).where().eq("username", user.getUsername()).eq("password", user.getPassword()).findUnique();
         if (user1 != null) {
+            System.out.println("登录成功=======================" + user.getUsername());
             session.setAttribute(MvcConfiguration.SESSION_KEY, user);
             model.addAttribute("username", user1.getUsername());
-            return "/login";
+            return "login";
         }
-        model.addAttribute("key", "登陆失败----------------index");
-        return "redirect:/index";
+        System.out.println("登录失败=======================" + user.getUsername());
+        return "redirect:/";
     }
 
     @RequestMapping("list")
     String list(Model model) {
         List<Student> students = ebeanServer.find(Student.class).findList();
         model.addAttribute("students", students);
-        return "/list";
+        return "list";
     }
 
     @RequestMapping(value = "{id}")
