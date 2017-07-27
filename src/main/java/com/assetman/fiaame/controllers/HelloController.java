@@ -51,7 +51,7 @@ public class HelloController {
         return "list";
     }
 
-    @RequestMapping(value = "{id}")
+    @RequestMapping(value = "/student/{id}")
     Student findbyid(@PathVariable Long id) {
         return ebeanServer.find(Student.class).where().eq("id", id).findUnique();
     }
