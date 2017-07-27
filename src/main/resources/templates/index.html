@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<h1 th:inline="text">index</h1>
+<p th:text="${key}"></p>
+<form th:action="@{/login}" th:object="${user1}" method="POST" class="form-horizontal">
+    用户名：<input type="text" value="" name="username"/>
+    密码：<input type="text" value="" name="password"/>
+    <input type="submit"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+欢迎您:<span th:text="${session.user.username}"></span>
+<hr/>
+<table>
+    <tr>
+        <td>#</td>
+        <td>姓名</td>
+        <td>年龄</td>
+    </tr>
+    <tr th:each="s,stat:${students}">
+        <td th:text="${stat.index}">1</td>
+        <td th:text="${s.name}">s.name</td>
+        <td th:text="${s.gender}">s.gender</td>
+    </tr>
+</table>
+</body>
+</html>
