@@ -1,18 +1,14 @@
 package com.assetman.fiaame.controllers;
 
-import com.assetman.fiaame.configuration.MvcConfiguration;
-import com.assetman.fiaame.models.Student;
-import com.assetman.fiaame.models.Test;
 import com.assetman.fiaame.models.User;
 import io.ebean.EbeanServer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -25,53 +21,14 @@ public class HelloController {
     private EbeanServer ebeanServer;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    String index(Model model) {
-        model.addAttribute("key", "hello world!----------------index");
-        return "index";
+    String index() {
+        return "/index";
     }
 
-    @RequestMapping(value = "tologin", method = RequestMethod.POST)
-    String tologin(Model model, @Valid @ModelAttribute(value = "user") User user, HttpSession session) {
-        System.out.println("登陆===================" + user.getUsername());
-        User user1 = ebeanServer.find(User.class).where().eq("username", user.getUsername()).eq("password", user.getPassword()).findUnique();
-        if (user1 != null) {
-            System.out.println("登录成功=======================" + user.getUsername());
-            session.setAttribute(MvcConfiguration.SESSION_KEY, user);
-            return "redirect:/login";
-        }
-        System.out.println("登录失败=======================" + user.getUsername());
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    String login() {
-        return "login";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute(MvcConfiguration.SESSION_KEY);
-        return "redirect:/";
-    }
-
-    @RequestMapping("list")
-    String list(Model model) {
-        List<Student> students = ebeanServer.find(Student.class).findList();
-        model.addAttribute("students", students);
-        return "list";
-    }
-
-    @RequestMapping(value = "/student/{id}")
-    Student findbyid(@PathVariable Long id) {
-        return ebeanServer.find(Student.class).where().eq("id", id).findUnique();
-    }
-
-    @RequestMapping("test/add")
-    public List<Test> addTest() {
-        Test test = new Test();
-        test.test = 2;
-        ebeanServer.save(test);
-        log.info("======================================添加Test========================================");
-        return ebeanServer.find(Test.class).findList();
+    @RequestMapping(value = "/userlist", method = RequestMethod.GET)
+    String userlist(Model model) {
+        List<User> users = ebeanServer.find(User.class).where().findList();
+        model.addAttribute("users", users);
+        return "/user/userlist";
     }
 }
