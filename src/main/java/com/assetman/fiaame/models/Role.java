@@ -9,7 +9,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "s_role")
-public class SysRole extends BaseModel {
+public class Role extends BaseModel {
 
     public Integer uid;
 
