@@ -23,6 +23,8 @@
         <java.version>1.8</java.version>
         <ebean.version>10.1.1</ebean.version>
         <ebean.support.version>10.1.1</ebean.support.version>
+        <thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
     </properties>
 
     <dependencies>
