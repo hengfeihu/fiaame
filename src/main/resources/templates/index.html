@@ -2,10 +2,12 @@
 <head>
     <meta charset="UTF-8"/>
     <title>首页</title>
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/sockjs.min.js"></script>
+    <script src="/js/stomp.min.js"></script>
 </head>
 <body>
 <div class="container" style="padding: 0">
@@ -37,6 +39,41 @@
             <p>这是第一个Springboot+Ebean的项目</p>
         </div>
     </div>
+    <div class="row" style="margin: 0">
+        <div class="jumbotron">
+            <h1>测试websocket</h1>
+            <button type="button" id="connect">连接</button>
+            <p>连接状态：<span id="status"></span></p>
+            <br/>
+            <input type="text" value="" id="msg">
+            <button type="button" id="send">发送</button>
+            <hr/>
+            <ul id="content">
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
+<script>
+    var stompClient = null;
+    $("#connect").on("click", function () {
+        connect();
+    });
+
+    $("#send").on("click", function () {
+        stompClient.send("/ws/hello", {}, $("#msg").val());
+    });
+
+    var connect = function () {
+        var socket = new SockJS('/my-ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            $("#status").html('Connected: ' + frame);
+            stompClient.subscribe("/topic/hello", function (data) {
+                var obj = JSON.parse(data.body);
+                $("#content").append("<li>" + obj.username + "：" + obj.message + "</li>");
+            })
+        })
+    };
+</script>
 </html>

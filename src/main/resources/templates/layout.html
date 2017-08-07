@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:fragment="common_header(title,links)">
+    <title th:utext="${title}">Layout</title>
+    <!-- Common styles and scripts -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/awesomeapp.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+    <script type="text/javascript" th:src="@{/sh/scripts/codebase.js}"></script>
+    <!--/* Per-page placeholder for additional links */-->
+    <th:block th:replace="${links} ?: ~{}" />
+</head>
+<body>
+<div class="container" style="padding: 0">
+    <navbar th:replace="/_fragments/navbar::navbar"></navbar>
+    <div layout:fragment="content" id="content"></div>
+</div>
+</body>
+</html>

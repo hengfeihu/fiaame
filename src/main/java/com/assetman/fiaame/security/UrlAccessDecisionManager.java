@@ -28,7 +28,8 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
                 || matchers("/js/**", request)
                 || matchers("/css/**", request)
                 || matchers("/fonts/**", request)
-                || matchers("/favicon.ico", request)) {
+                || matchers("/favicon.ico", request)
+                || matchers("/my-ws/**", request)) {
             return;
         } else {
             for (GrantedAuthority ga : authentication.getAuthorities()) {
